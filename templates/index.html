@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task & Deadline Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; background: #f9f9f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { margin-top: 0; color: #333; }
+        form { display: flex; gap: 10px; margin-bottom: 20px; }
+        input[type="text"] { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        select, button { padding: 8px 12px; border: 1px solid #007bff; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .done { text-decoration: line-through; color: #888; }
+        .badge { font-size: 0.8em; padding: 2px 6px; border-radius: 4px; background: #eee; }
+        .High { background: #ffcccc; color: #990000; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Task Tracker</h1>
+        <form action="/add" method="POST">
+            <input type="text" name="title" placeholder="Enter task title..." required>
+            <select name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <ul>
+            {% for task in tasks %}
+            <li>
+                <span class="{% if task.done %}done{% endif %}">
+                    <strong>{{ task.title }}</strong> 
+                    <span class="badge {{ task.priority }}">{{ task.priority }}</span>
+                </span>
+                {% if not task.done %}
+                <a href="/complete/{{ task.id }}" style="color: green; text-decoration: none;">✔ Done</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
